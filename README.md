@@ -5,7 +5,7 @@ Flask app to manage user login and registration.
 Setup:
 ```
 pip install vitualenv # if not already installed
-git clone https://github.com/bhuvansingla/flask-login.git
+git clone https://github.com/tiennt-no1/flask-login.git
 cd flask-login
 python -m virtualenv venv -p python3
 source venv/bin/activate | .\venv\Scripts\activate.bat # depend os linux or windows
