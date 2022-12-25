@@ -1,5 +1,6 @@
 from flask import Flask, url_for, render_template, request, redirect, session
 from flask_sqlalchemy import SQLAlchemy
+import re
 
 app = Flask(__name__)
 app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///users.db'
@@ -14,6 +15,13 @@ class User(db.Model):
     def __init__(self, username, password):
         self.username = username
         self.password = password
+
+    def is_valid(self):
+        if not self.password or not self.username:
+            return False
+        if not re.match("^[a-zA-Z0-9_.-]+$", self.username):
+            return False
+        return True
 
 
 @app.route('/', methods=['GET'])
