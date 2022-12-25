@@ -37,6 +37,9 @@ def register():
     if request.method == 'POST':
         try:
             db.session.add(User(username=request.form['username'], password=request.form['password']))
+            if not user.is_valid():
+                return render_template('index.html', message="User name or password is invalid")
+ 
             db.session.commit()
             return redirect(url_for('login'))
         except:
