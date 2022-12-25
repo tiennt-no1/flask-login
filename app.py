@@ -1,6 +1,9 @@
 from flask import Flask, url_for, render_template, request, redirect, session
 from flask_sqlalchemy import SQLAlchemy
 import re
+from flask import jsonify
+from sqlalchemy import inspect
+
 
 app = Flask(__name__)
 app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///users.db'
@@ -32,14 +35,27 @@ def index():
         return render_template('index.html', message="Hello!")
 
 
+def object_as_dict(obj):
+    return {c.key: getattr(obj, c.key)
+            for c in inspect(obj).mapper.column_attrs}
+
+
+@app.route('/users', methods=['GET'])
+def list_users():
+    render_users = [object_as_dict(user) for user in User.query.all()]
+    
+    return jsonify(render_users)
+
+
 @app.route('/register/', methods=['GET', 'POST'])
 def register():
     if request.method == 'POST':
         try:
-            db.session.add(User(username=request.form['username'], password=request.form['password']))
+            db.session.add(
+                User(username=request.form['username'], password=request.form['password']))
             if not user.is_valid():
                 return render_template('index.html', message="User name or password is invalid")
- 
+
             db.session.commit()
             return redirect(url_for('login'))
         except:
@@ -67,8 +83,10 @@ def logout():
     session['logged_in'] = False
     return redirect(url_for('index'))
 
-if(__name__ == '__main__'):
+
+if (__name__ == '__main__'):
     app.secret_key = "ThisIsNotASecret:p"
     with app.app_context():
         db.create_all()
+        app.debug = True
         app.run()

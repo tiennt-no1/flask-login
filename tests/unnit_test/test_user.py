@@ -14,26 +14,25 @@ fake = Faker()
 def test_user():
     return User( fake.profile(fields=['username'])['username'], fake.password())
 
-class TestStringMethods():
 
-    def test_valid_user(self,test_user):
+def test_valid_user(test_user):
 
-        assert test_user.username
-        assert test_user.password
-        assert test_user.is_valid()
+    assert test_user.username
+    assert test_user.password
+    assert test_user.is_valid()
 
-        test_user.username = fake.name()
-        assert " " in test_user.username
-        assert not test_user.is_valid()
+    test_user.username = fake.name()
+    assert " " in test_user.username
+    assert not test_user.is_valid()
 
-        test_user.username = None
-        assert not test_user.is_valid()
+    test_user.username = None
+    assert not test_user.is_valid()
 
-        test_user.password = None
-        assert not test_user.is_valid()
+    test_user.password = None
+    assert not test_user.is_valid()
 
-        test_user.password = ""
-        assert not test_user.is_valid() 
+    test_user.password = ""
+    assert not test_user.is_valid() 
 
     
 
