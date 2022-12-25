@@ -12,13 +12,17 @@ fake = Faker()
 
 @pytest.fixture
 def test_user():
-    return User(fake.name(), fake.password())
+    return User( fake.profile(fields=['username'])['username'], fake.password())
 
 class TestStringMethods():
 
     def test_valid_user(self,test_user):
+
         assert test_user.username
         assert test_user.password
+        assert test_user.is_valid()
+
+        test_user.username = fake.name()
         assert " " in test_user.username
         assert not test_user.is_valid()
 
