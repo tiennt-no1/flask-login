@@ -16,26 +16,14 @@ def chrome_driver_init(request):
     chrome_driver.close()
  
 @pytest.mark.usefixtures("chrome_driver_init")
-class Test_URL_Chrome(Basic_Chrome_Test):
+class Test_URL_Chrome():
     def test_open_url(self):
-        self.driver.get('https://lambdatest.github.io/sample-todo-app/')
+        self.driver.get('http://localhost:5000')
         self.driver.maximize_window()
+        # import pdb; pdb.set_trace()
+        self.driver.find_element("id", "register_button").click()
+        assert self.driver.find_element("name", "password").send_keys()
+        assert self.driver.find_element("name", "username").send_keys()
+        sleep(100)
  
-        self.driver.find_element_by_name("li1").click()
-        self.driver.find_element_by_name("li2").click()
- 
-        title = "Sample page - lambdatest.com"
-        assert title ==  self.driver.title
- 
-        sample_text = "Happy Testing at LambdaTest"
-        email_text_field =  self.driver.find_element_by_id("sampletodotext")
-        email_text_field.send_keys(sample_text)
-        time.sleep(5)
- 
-        self.driver.find_element_by_id("addbutton").click()
-        time.sleep(5)
- 
-        output_str =  self.driver.find_element_by_name("li6").text
-        sys.stderr.write(output_str)
- 
-        time.sleep(2) 
+       
