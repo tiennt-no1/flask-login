@@ -3,13 +3,12 @@ import pytest
 from selenium import webdriver
 from selenium.webdriver.chrome.options import Options
 from selenium.webdriver.common.keys import Keys
-import time
 from time import sleep
 import sys
 from faker import Faker
 fake = Faker()
 sys.path.append("C:/Users/tiennt/Desktop/code lab/flask-login")
-from app import User, app
+from app import User, app, db
 
 # Fixture for Chrome
 @pytest.fixture(scope="class")
@@ -25,8 +24,6 @@ class Test_URL_Chrome():
     def test_open_url(self):
         with app.app_context():
             self.driver.get('http://localhost:5000')
-            # self.driver.maximize_window()
-            # import pdb; pdb.set_trace()
             username = fake.profile(fields=['username'])['username']
             password = fake.password()
             self.driver.find_element("id", "register_button").click()
@@ -49,9 +46,13 @@ class Test_URL_Chrome():
             self.driver.find_element("name", "password").send_keys(password)
 
             self.driver.find_element("id", "submit_login_button").click()
-
+            # should auto navigate to wellcome page
             assert self.driver.find_element("id", "wellcome_span").text == "WELCOME"
             assert self.driver.find_element("id", "logout_button")
+            # tear down
+            db.session.delete(user)
+            db.session.commit()
+            sleep(1)
 
 
 

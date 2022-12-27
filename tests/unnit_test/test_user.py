@@ -8,7 +8,7 @@ from app import User
 import pytest
 from faker import Faker
 fake = Faker()
-
+from time import sleep
 
 @pytest.fixture
 def test_user():
@@ -33,6 +33,7 @@ def test_valid_user(test_user):
 
     test_user.password = ""
     assert not test_user.is_valid() 
+    sleep(1)
 
     
 

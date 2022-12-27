@@ -5,7 +5,7 @@ sys.path.append("C:/Users/tiennt/Desktop/code lab/flask-login")
 from app import app as _app, User
 from faker import Faker
 fake = Faker()
-
+from time import sleep
 
 @pytest.fixture
 def client():
@@ -24,3 +24,4 @@ def test_get_users(client):
         render_user = response[0]
         assert "username" in render_user
         assert "password" in render_user
+    sleep(1)
