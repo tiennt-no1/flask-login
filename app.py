@@ -3,6 +3,8 @@ from flask_sqlalchemy import SQLAlchemy
 import re
 from flask import jsonify
 from sqlalchemy import inspect
+import requests
+
 
 
 app = Flask(__name__)
@@ -53,10 +55,9 @@ def register():
         try:
             user = User(
                 username=request.form['username'], password=request.form['password'])
-            db.session.add(user)
             if not user.is_valid():
                 return render_template('index.html', message="User name or password is invalid")
-
+            db.session.add(user)
             db.session.commit()
             return redirect(url_for('login'))
         except Exception as e:
@@ -84,6 +85,17 @@ def logout():
     session['logged_in'] = False
     return redirect(url_for('index'))
 
+# script insert into db from other api
+def insert_user_from_out_side():
+    response = requests.get('https://randomuser.me/api/')
+    users = [] 
+    for user_json in response.json()["results"]:
+        user = User(user_json["login"]["username"], user_json["login"]["password"])
+        users.append(user)
+        import pdb; pdb.set_trace()
+        db.session.add(user)
+    db.session.commit()
+    return users
 
 if (__name__ == '__main__'):
     app.secret_key = "ThisIsNotASecret:p"
