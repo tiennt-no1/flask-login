@@ -43,7 +43,7 @@ def object_as_dict(obj):
 @app.route('/users', methods=['GET'])
 def list_users():
     render_users = [object_as_dict(user) for user in User.query.all()]
-    
+
     return jsonify(render_users)
 
 
@@ -51,14 +51,15 @@ def list_users():
 def register():
     if request.method == 'POST':
         try:
-            db.session.add(
-                User(username=request.form['username'], password=request.form['password']))
+            user = User(
+                username=request.form['username'], password=request.form['password'])
+            db.session.add(user)
             if not user.is_valid():
                 return render_template('index.html', message="User name or password is invalid")
 
             db.session.commit()
             return redirect(url_for('login'))
-        except:
+        except Exception as e:
             return render_template('index.html', message="User Already Exists")
     else:
         return render_template('register.html')
