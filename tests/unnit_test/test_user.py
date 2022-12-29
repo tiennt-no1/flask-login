@@ -23,25 +23,25 @@ def test_user_json():
     return {"results": [{"login": {"username": fake.profile(fields=['username'])['username'], "password": fake.password()}}]}
 
 
-# def test_valid_user(test_user):
+def test_valid_user(test_user):
 
-#     assert test_user.username
-#     assert test_user.password
-#     assert test_user.is_valid()
+    assert test_user.username
+    assert test_user.password
+    assert test_user.is_valid()
 
-#     test_user.username = fake.name()
-#     assert " " in test_user.username
-#     assert not test_user.is_valid()
+    test_user.username = fake.name()
+    assert " " in test_user.username
+    assert not test_user.is_valid()
 
-#     test_user.username = None
-#     assert not test_user.is_valid()
+    test_user.username = None
+    assert not test_user.is_valid()
 
-#     test_user.password = None
-#     assert not test_user.is_valid()
+    test_user.password = None
+    assert not test_user.is_valid()
 
-#     test_user.password = ""
-#     assert not test_user.is_valid()
-#     sleep(1)
+    test_user.password = ""
+    assert not test_user.is_valid()
+    sleep(1)
 
 def test_insert_user_from_other_api(test_user_json):
     with app.app_context():

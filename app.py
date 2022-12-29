@@ -92,7 +92,6 @@ def insert_user_from_out_side():
     for user_json in response.json()["results"]:
         user = User(user_json["login"]["username"], user_json["login"]["password"])
         users.append(user)
-        import pdb; pdb.set_trace()
         db.session.add(user)
     db.session.commit()
     return users
