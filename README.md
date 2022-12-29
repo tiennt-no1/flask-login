@@ -15,6 +15,8 @@ python3 app.py
 
 Then open ```http://localhost:5000/``` in a web-browser.
 ------------------------
+```
 use pytest to run the tests
 pytest --cov ./ --cov-report=html
 pytest -n 3
+```
