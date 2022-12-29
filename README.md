@@ -17,6 +17,6 @@ Then open ```http://localhost:5000/``` in a web-browser.
 ------------------------
 ```
 use pytest to run the tests
-pytest --cov ./ --cov-report=html
+pytest --cov ./ --cov-report=html # the visualize of test coverage report will generate after running test
 pytest -n 3
 ```
